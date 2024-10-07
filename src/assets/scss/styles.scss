@@ -1,2 +1,22 @@
-@import "custom";
-@import "bootstrap/scss/bootstrap";
+.name-resolution-table {
+
+    input {
+        padding: 10px 15px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        outline: none;
+        width: 100%;
+        font-family: monospace;
+
+        &:focus,
+        &:not([value]):not(:placeholder-shown) {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    input[value=""],
+    input[value=" "] {
+        border-color: rgba(0, 0, 0, 0.2);
+        padding: 10px 15px;
+    }
+}
