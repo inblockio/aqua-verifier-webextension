@@ -266,8 +266,7 @@ const App = () => {
 
   const [data, setData] = React.useState([]);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
-  const [nameResolutionEnabled, setNameResolutionEnabled] =
-    React.useState(false);
+  const [nameResolutionEnabled, setNameResolutionEnabled] = React.useState(false);
   const toast = useToast()
   // We need to keep the table from resetting the pageIndex when we
   // Update data. So we can keep track of that flag with a ref.
