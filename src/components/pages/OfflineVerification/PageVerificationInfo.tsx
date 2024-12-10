@@ -47,6 +47,36 @@ const supportedImageExtensions = [
   "webp",
 ];
 
+const supportedVideoExtensions = [
+  "mp4",
+  "webm",
+  "ogg",
+  "mov",
+  "avi",
+  "mkv"
+];
+
+const supportedAudioExtensions = [
+  "mp3",
+  "wav",
+  "ogg",
+  "aac",
+  "flac",
+  "m4a"
+];
+
+const supportedDocumentExtensions = [
+  "pdf",
+  "doc",
+  "docx",
+  "xls",
+  "xlsx",
+  "ppt",
+  "pptx"
+];
+
+
+
 export type PageResult = {
   genesis_hash: string;
   domain_id: string;
@@ -126,13 +156,55 @@ const PageVerificationInfo = ({
         alert("The base64-encoded file content is corrupted.");
       }
 
+      // if (supportedImageExtensions.includes(fileExtension)) {
+      //   // If the file is an image supported in HTML, display it.
+      //   fileContent +=
+      //     `<div><img src='data:${mimeType};base64,` +
+      //     lastRevision.content.file.data +
+      //     "'></div>";
+      // }
+      // if(supportedVideoExtensions.includes(fileExtension)) {
+      //   // If the file is an image supported in HTML, display it.
+      //   fileContent +=
+      //     `<div><img src='data:${mimeType};base64,` +
+      //     lastRevision.content.file.data +
+      //     "'></div>";
+      // }
+
       if (supportedImageExtensions.includes(fileExtension)) {
-        // If the file is an image supported in HTML, display it.
+        // Render image
         fileContent +=
           `<div><img src='data:${mimeType};base64,` +
           lastRevision.content.file.data +
           "'></div>";
+      } else if (supportedVideoExtensions.includes(fileExtension)) {
+        // Render video
+        fileContent +=
+          `<div><video controls>
+            <source src="data:${mimeType};base64,${lastRevision.content.file.data}" type="${mimeType}">
+            Your browser does not support the video tag.
+          </video></div>`;
+      } else if (supportedAudioExtensions.includes(fileExtension)) {
+        // Render audio
+        fileContent +=
+          `<div><audio controls>
+            <source src="data:${mimeType};base64,${lastRevision.content.file.data}" type="${mimeType}">
+            Your browser does not support the audio tag.
+          </audio></div>`;
+      } else if (supportedDocumentExtensions.includes(fileExtension)) {
+        // Render documents like PDF
+        if (fileExtension === "pdf") {
+          fileContent +=
+            `<div><embed src="data:${mimeType};base64,${lastRevision.content.file.data}" 
+              type="${mimeType}" width="100%" height="500px" /></div>`;
+        } else {
+          fileContent += `<div>Document type "${fileExtension}" not supported for inline preview.</div>`;
+        }
+      } else {
+        fileContent += `<div>Unsupported file type: ${fileExtension}</div>`;
       }
+
+
     }
     return wikiHtml + fileContent;
   }
@@ -153,7 +225,7 @@ const PageVerificationInfo = ({
 
       const [verificationStatus, details] = await externalVerifierVerifyPage(
         { offline_data: pageResult },
-        verbose, 
+        verbose,
         doVerifyMerkleProof,
       );
       const title = pageResult.title;

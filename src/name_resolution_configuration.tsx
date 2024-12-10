@@ -2,8 +2,8 @@
 import React from "react";
 import { createRoot } from 'react-dom/client';
 import { useTable, usePagination } from "react-table";
-import Alert from "react-bootstrap/Alert";
 import "./assets/scss/styles.scss";
+import { Alert } from "@chakra-ui/react";
 
 const range = (len) => {
   // Creates [0, 1, 2, ... <len>]
